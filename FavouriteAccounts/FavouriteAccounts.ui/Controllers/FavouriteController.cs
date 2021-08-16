@@ -15,6 +15,11 @@ namespace FavouriteAccounts.ui.Controllers
         // GET: Favourite
         public ActionResult Index()
         {
+            IEnumerable<FavouriteAccountModel> favouriteList;
+            HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts").Result;
+
+            // todo manage data logic from response to list
+
             return View();
         }
 
