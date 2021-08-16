@@ -25,12 +25,14 @@ namespace FavouriteAccounts.ui.Controllers
         {
             try
             {
-                HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("Customer/" + customer.Id.ToString()).Result;
+                //todo after syncing with api
+                HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("Customer/Details/" + customer.Id.ToString()).Result;
+
 
                 if (response.IsSuccessStatusCode)
                 {
-                    //todo go to the list page
-
+                    var customerName = response.Content.ReadAsStringAsync();
+                    Session["CustomerName"] = "Profesor";
                     return RedirectToAction("Index");
                 }
                 return View();

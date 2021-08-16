@@ -14,16 +14,23 @@ namespace FavouriteAccounts.ui.Controllers
     public class FavouriteController : Controller
     {
         IFavouriteManagementService favouriteManagementService;
+        IBankService bankService;
 
         public FavouriteController()
         {
             // This should be replaced by dependency injection! so object should come from parameter of the controller!
             favouriteManagementService = new FavouriteManagementService();
+            bankService = new BankService();
         }
 
         // GET: Favourite
         public ActionResult Index()
         {
+            IEnumerable<FavouriteAccountModel> favouriteList;
+            HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts").Result;
+
+            // todo manage data logic from response to list
+
             return View();
         }
 
@@ -54,7 +61,8 @@ namespace FavouriteAccounts.ui.Controllers
                 }
                 var ibanRetriever = new IBANRetriever();
                 var ibanCode = ibanRetriever.RetrieveIBANCodeFromAcccountNumber(model.AccountNumber);
-                model.BankId = 2;
+                var bank = this.bankService.GetBank(ibanCode);
+                model.BankId = 2;//Should be bank.ibanCode!
                 var status = favouriteManagementService.AddFavouriteAccount(model);
 
                 return RedirectToAction("Index");
@@ -78,7 +86,10 @@ namespace FavouriteAccounts.ui.Controllers
             try
             {
                 model.CustomerId = 1; //To be replaced by the value from Session variable from login page
-                model.BankId = 2;
+                var ibanRetriever = new IBANRetriever();
+                var ibanCode = ibanRetriever.RetrieveIBANCodeFromAcccountNumber(model.AccountNumber);
+                var bank = this.bankService.GetBank(ibanCode);
+                model.BankId = 2;//Should be bank.ibanCode!
                 var status = favouriteManagementService.AmendFavouriteAccount(model);
 
                 return RedirectToAction("Index");
