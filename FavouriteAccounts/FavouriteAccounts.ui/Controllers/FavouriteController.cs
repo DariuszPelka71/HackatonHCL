@@ -55,9 +55,7 @@ namespace FavouriteAccounts.ui.Controllers
                 var ibanRetriever = new IBANRetriever();
                 var ibanCode = ibanRetriever.RetrieveIBANCodeFromAcccountNumber(model.AccountNumber);
                 model.BankId = 2;
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
-                var data = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = FavouriteApiClient.webApiClient.PostAsync("FavoriteAccounts", data).Result;
+                var status = favouriteManagementService.AddFavouriteAccount(model);
 
                 return RedirectToAction("Index");
             }
@@ -81,9 +79,7 @@ namespace FavouriteAccounts.ui.Controllers
             {
                 model.CustomerId = 1; //To be replaced by the value from Session variable from login page
                 model.BankId = 2;
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
-                var data = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = FavouriteApiClient.webApiClient.PutAsync("FavoriteAccounts", data).Result;
+                var status = favouriteManagementService.AmendFavouriteAccount(model);
 
                 return RedirectToAction("Index");
             }
