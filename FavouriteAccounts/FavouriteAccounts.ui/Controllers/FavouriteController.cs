@@ -1,6 +1,10 @@
-﻿using System;
+﻿using FavouriteAccounts.ui.Helper;
+using FavouriteAccounts.ui.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -28,11 +32,15 @@ namespace FavouriteAccounts.ui.Controllers
 
         // POST: Favourite/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FavouriteAccountModel model)
         {
             try
             {
-                // TODO: Add insert logic here
+                model.CustomerId = 1; //To be replaced by the value from Session variable from login page
+                model.BankId = 2;
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
+                var data = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = FavouriteApiClient.webApiClient.PostAsync("FavoriteAccounts", data).Result;
 
                 return RedirectToAction("Index");
             }
