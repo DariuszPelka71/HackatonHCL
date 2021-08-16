@@ -136,9 +136,12 @@
     </Compile>
     <Compile Include="Helper\FavouriteApiClient.cs" />
     <Compile Include="Helper\IBANRetriever.cs" />
+    <Compile Include="Models\BankModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\FavouriteAccountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BankService.cs" />
+    <Compile Include="Services\IBankService.cs" />
     <Compile Include="Services\IFavouriteManagementService.cs" />
     <Compile Include="Services\FavouriteManagementService.cs" />
   </ItemGroup>

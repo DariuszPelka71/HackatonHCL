@@ -28,7 +28,7 @@ namespace FavouriteAccounts.api.Controllers
         // GET: api/Customer
         public IQueryable<Customer> GetCustomers()
         {
-            return customerDB.Customers;
+            return customerDB.Customers.AsQueryable();
         }
 
         // GET: api/Customer/5

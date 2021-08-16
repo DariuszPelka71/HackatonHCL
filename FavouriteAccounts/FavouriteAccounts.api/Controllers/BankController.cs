@@ -15,29 +15,31 @@ namespace FavouriteAccounts.api.Controllers
 {
     public class BankController : ApiController
     {
-        private FavoritePayeeAccountsManagementEntities bankDB;
+        private FavoritePayeeAccountsManagementEntities bankDB = new FavoritePayeeAccountsManagementEntities();
+
+        /// <summary>
+        /// Constructor to initialize Context
+        /// </summary>
         public BankController()
         {
             bankDB = new FavoritePayeeAccountsManagementEntities();
         }
-
-
-        // GET: api/Bank
         /// <summary>
-        /// Method to get Banks list
+        /// Action method to get bank list
         /// </summary>
         /// <returns></returns>
+        // GET: api/Bank
         public IQueryable<Bank> GetBanks()
         {
             return bankDB.Banks;
         }
 
-        // GET: api/Bank/5
         /// <summary>
-        /// Method to get Bank Detail based on Id
+        /// Method to get Bank detail based on id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        // GET: api/Bank/5
         [ResponseType(typeof(Bank))]
         public async Task<IHttpActionResult> GetBank(int id)
         {
@@ -51,7 +53,6 @@ namespace FavouriteAccounts.api.Controllers
         }
 
        
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

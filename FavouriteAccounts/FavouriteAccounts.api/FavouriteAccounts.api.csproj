@@ -214,8 +214,8 @@
     <Content Include="Global.asax" />
     <Content Include="Models\FavouriteAccountsModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>FavouriteAccountsModel.Context.cs</LastGenOutput>
       <DependentUpon>FavouriteAccountsModel.edmx</DependentUpon>
+      <LastGenOutput>FavouriteAccountsModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\FavouriteAccountsModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
