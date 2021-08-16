@@ -32,10 +32,13 @@ namespace FavouriteAccounts.ui.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var customerName = response.Content.ReadAsStringAsync();
+                    //todo test data
+                    Session["CustomerId"] = 1;
                     Session["CustomerName"] = "Profesor";
                     return RedirectToAction("Index");
                 }
-                return View();
+                return RedirectToAction("Index");
+                //return View();
             }
             catch
             {
