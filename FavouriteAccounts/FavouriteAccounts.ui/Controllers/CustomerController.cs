@@ -25,13 +25,15 @@ namespace FavouriteAccounts.ui.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                // call api with result ok for the login comparison
+                HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("Customer/" + customer.Id.ToString()).Result;
 
-                // todo call proper method for validate
-                //HttpResponseMessage response = FavouriteApiClient.webApiClient.PostAsync("Customer", customer.Id.ToString()).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    //todo go to the list page
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                return View();
             }
             catch
             {
