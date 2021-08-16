@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Optimization;
+using FavouriteAccounts.ui.Models;
+using System.Net.Http;
 
 namespace FavouriteAccounts.ui.Controllers
 {
@@ -18,12 +20,14 @@ namespace FavouriteAccounts.ui.Controllers
 
         // POST: Customer/Validate
         [HttpPost]
-        public ActionResult Validate(int CustomerId)
+        public ActionResult Validate(CustomerModel customer)
         {
             try
             {
                 // TODO: Add insert logic here
                 // call api with result ok for the login comparison
+
+                HttpResponseMessage response = ApiClient.webApiClient.PostAsync("Customer", customer.Id.ToString()).Result;
 
                 return RedirectToAction("Index");
             }
