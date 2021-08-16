@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FavouriteAccounts.ui", "Fav
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FavouriteAccounts.ui.Tests", "FavouriteAccounts.ui.Tests\FavouriteAccounts.ui.Tests.csproj", "{02996FD4-53A4-4C44-A415-F43D06F28066}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "FavouriteAccount.Database", "FavouriteAccount.Database\FavouriteAccount.Database.sqlproj", "{FEE35516-E846-4B10-9ABA-9C731B3FA161}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,12 @@ Global
 		{02996FD4-53A4-4C44-A415-F43D06F28066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02996FD4-53A4-4C44-A415-F43D06F28066}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02996FD4-53A4-4C44-A415-F43D06F28066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEE35516-E846-4B10-9ABA-9C731B3FA161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEE35516-E846-4B10-9ABA-9C731B3FA161}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEE35516-E846-4B10-9ABA-9C731B3FA161}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FEE35516-E846-4B10-9ABA-9C731B3FA161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEE35516-E846-4B10-9ABA-9C731B3FA161}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEE35516-E846-4B10-9ABA-9C731B3FA161}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
