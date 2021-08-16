@@ -2,127 +2,109 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
-using System.Web.Mvc;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
 using FavouriteAccounts.api.Models;
 
 namespace FavouriteAccounts.api.Controllers
 {
-    public class FavoriteAccountsController : Controller
+    public class FavoriteAccountsController : ApiController
     {
-        private FavoritePayeeAccountsManagementEntities db = new FavoritePayeeAccountsManagementEntities();
+        private readonly FavoritePayeeAccountsManagementEntities db;
 
-        // GET: FavoriteAccounts
-        public async Task<ActionResult> Index()
+        public FavoriteAccountsController()
         {
-            var favoriteAccounts = db.FavoriteAccounts.Include(f => f.Bank).Include(f => f.Customer);
-            return View(await favoriteAccounts.ToListAsync());
+            db = new FavoritePayeeAccountsManagementEntities();
         }
 
-        // GET: FavoriteAccounts/Details/5
-        public async Task<ActionResult> Details(int? id)
+        // GET: api/FavoriteAccounts
+        public IQueryable<FavoriteAccount> GetFavoriteAccounts()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            return db.FavoriteAccounts;
+        }
+
+        // GET: api/FavoriteAccounts/5
+        [ResponseType(typeof(FavoriteAccount))]
+        public async Task<IHttpActionResult> GetFavoriteAccount(int id)
+        {
             FavoriteAccount favoriteAccount = await db.FavoriteAccounts.FindAsync(id);
             if (favoriteAccount == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
-            return View(favoriteAccount);
+
+            return Ok(favoriteAccount);
         }
 
-        // GET: FavoriteAccounts/Create
-        public ActionResult Create()
+        // PUT: api/FavoriteAccounts/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutFavoriteAccount(int id, FavoriteAccount favoriteAccount)
         {
-            ViewBag.BankId = new SelectList(db.Banks, "Id", "Code");
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name");
-            return View();
-        }
-
-        // POST: FavoriteAccounts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,AccountNumber,CustomerId,BankId")] FavoriteAccount favoriteAccount)
-        {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.FavoriteAccounts.Add(favoriteAccount);
+                return BadRequest(ModelState);
+            }
+
+            if (id != favoriteAccount.Id)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(favoriteAccount).State = EntityState.Modified;
+
+            try
+            {
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!FavoriteAccountExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            ViewBag.BankId = new SelectList(db.Banks, "Id", "Code", favoriteAccount.BankId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", favoriteAccount.CustomerId);
-            return View(favoriteAccount);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: FavoriteAccounts/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        // POST: api/FavoriteAccounts
+        [ResponseType(typeof(FavoriteAccount))]
+        public async Task<IHttpActionResult> PostFavoriteAccount(FavoriteAccount favoriteAccount)
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest(ModelState);
             }
+
+            db.FavoriteAccounts.Add(favoriteAccount);
+            await db.SaveChangesAsync();
+
+            return CreatedAtRoute("DefaultApi", new { id = favoriteAccount.Id }, favoriteAccount);
+        }
+
+        // DELETE: api/FavoriteAccounts/5
+        [ResponseType(typeof(FavoriteAccount))]
+        public async Task<IHttpActionResult> DeleteFavoriteAccount(int id)
+        {
             FavoriteAccount favoriteAccount = await db.FavoriteAccounts.FindAsync(id);
             if (favoriteAccount == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
-            ViewBag.BankId = new SelectList(db.Banks, "Id", "Code", favoriteAccount.BankId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", favoriteAccount.CustomerId);
-            return View(favoriteAccount);
-        }
 
-        // POST: FavoriteAccounts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,AccountNumber,CustomerId,BankId")] FavoriteAccount favoriteAccount)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(favoriteAccount).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            ViewBag.BankId = new SelectList(db.Banks, "Id", "Code", favoriteAccount.BankId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", favoriteAccount.CustomerId);
-            return View(favoriteAccount);
-        }
-
-        // GET: FavoriteAccounts/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            FavoriteAccount favoriteAccount = await db.FavoriteAccounts.FindAsync(id);
-            if (favoriteAccount == null)
-            {
-                return HttpNotFound();
-            }
-            return View(favoriteAccount);
-        }
-
-        // POST: FavoriteAccounts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            FavoriteAccount favoriteAccount = await db.FavoriteAccounts.FindAsync(id);
             db.FavoriteAccounts.Remove(favoriteAccount);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+
+            return Ok(favoriteAccount);
         }
 
         protected override void Dispose(bool disposing)
@@ -132,6 +114,11 @@ namespace FavouriteAccounts.api.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private bool FavoriteAccountExists(int id)
+        {
+            return db.FavoriteAccounts.Count(e => e.Id == id) > 0;
         }
     }
 }
