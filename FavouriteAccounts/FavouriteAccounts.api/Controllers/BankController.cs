@@ -10,19 +10,20 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using FavouriteAccounts.api.Models;
+using FavouriteAccounts.api.Repository;
 
 namespace FavouriteAccounts.api.Controllers
 {
     public class BankController : ApiController
     {
-        private FavoritePayeeAccountsManagementEntities bankDB = new FavoritePayeeAccountsManagementEntities();
+        private BankRepository  bankRepository;
 
         /// <summary>
         /// Constructor to initialize Context
         /// </summary>
         public BankController()
         {
-            bankDB = new FavoritePayeeAccountsManagementEntities();
+            bankRepository = new BankRepository();
         }
         /// <summary>
         /// Action method to get bank list
@@ -31,7 +32,7 @@ namespace FavouriteAccounts.api.Controllers
         // GET: api/Bank
         public IQueryable<Bank> GetBanks()
         {
-            return bankDB.Banks;
+            return bankRepository.GetBanks();
         }
 
         /// <summary>
@@ -41,9 +42,9 @@ namespace FavouriteAccounts.api.Controllers
         /// <returns></returns>
         // GET: api/Bank/5
         [ResponseType(typeof(Bank))]
-        public async Task<IHttpActionResult> GetBank(int id)
+        public IHttpActionResult GetBank(string Code)
         {
-            Bank bank = await bankDB.Banks.FindAsync(id);
+            Bank bank =  bankRepository.GetBank(Code);
             if (bank == null)
             {
                 return NotFound();
@@ -52,19 +53,9 @@ namespace FavouriteAccounts.api.Controllers
             return Ok(bank);
         }
 
-       
-        protected override void Dispose(bool disposing)
+        public bool BankExists(int id)
         {
-            if (disposing)
-            {
-                bankDB.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool BankExists(int id)
-        {
-            return bankDB.Banks.Count(e => e.Id == id) > 0;
+            return bankRepository.BankExists(id);
         }
     }
 }

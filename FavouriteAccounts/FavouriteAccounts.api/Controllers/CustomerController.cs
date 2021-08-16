@@ -10,16 +10,17 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using FavouriteAccounts.api.Models;
+using FavouriteAccounts.api.Repository;
 
 namespace FavouriteAccounts.api.Controllers
 {
     public class CustomerController : ApiController
     {
-        private FavoritePayeeAccountsManagementEntities customerDB;
+        private CustomerRepository customerRepository;
 
         public CustomerController()
         {
-            customerDB = new FavoritePayeeAccountsManagementEntities();
+            customerRepository = new CustomerRepository();
         }
         /// <summary>
         /// Action to get the list of customers
@@ -28,7 +29,7 @@ namespace FavouriteAccounts.api.Controllers
         // GET: api/Customer
         public IQueryable<Customer> GetCustomers()
         {
-            return customerDB.Customers.AsQueryable();
+            return customerRepository.GetCustomers();
         }
 
         // GET: api/Customer/5
@@ -40,7 +41,7 @@ namespace FavouriteAccounts.api.Controllers
         [ResponseType(typeof(Customer))]
         public async Task<IHttpActionResult> GetCustomer(int id)
         {
-            Customer customer = await customerDB.Customers.FindAsync(id);
+            Customer customer = await customerRepository.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
@@ -49,20 +50,14 @@ namespace FavouriteAccounts.api.Controllers
             return Ok(customer);
         }
 
-        
-
-        protected override void Dispose(bool disposing)
+        /// <summary>
+        /// Method to check if the customer exists
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool CustomerExists(int id)
         {
-            if (disposing)
-            {
-                customerDB.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool CustomerExists(int id)
-        {
-            return customerDB.Customers.Count(e => e.Id == id) > 0;
+            return customerRepository.CustomerExists(id);
         }
     }
 }
