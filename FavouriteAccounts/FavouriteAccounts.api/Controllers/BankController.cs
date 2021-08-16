@@ -15,19 +15,35 @@ namespace FavouriteAccounts.api.Controllers
 {
     public class BankController : ApiController
     {
-        private FavoritePayeeAccountsManagementEntities db = new FavoritePayeeAccountsManagementEntities();
+        private FavoritePayeeAccountsManagementEntities bankDB = new FavoritePayeeAccountsManagementEntities();
 
+        /// <summary>
+        /// Constructor to initialize Context
+        /// </summary>
+        public BankController()
+        {
+            bankDB = new FavoritePayeeAccountsManagementEntities();
+        }
+        /// <summary>
+        /// Action method to get bank list
+        /// </summary>
+        /// <returns></returns>
         // GET: api/Bank
         public IQueryable<Bank> GetBanks()
         {
-            return db.Banks;
+            return bankDB.Banks;
         }
 
+        /// <summary>
+        /// Method to get Bank detail based on id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: api/Bank/5
         [ResponseType(typeof(Bank))]
         public async Task<IHttpActionResult> GetBank(int id)
         {
-            Bank bank = await db.Banks.FindAsync(id);
+            Bank bank = await bankDB.Banks.FindAsync(id);
             if (bank == null)
             {
                 return NotFound();
@@ -36,84 +52,19 @@ namespace FavouriteAccounts.api.Controllers
             return Ok(bank);
         }
 
-        // PUT: api/Bank/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutBank(int id, Bank bank)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != bank.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(bank).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BankExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Bank
-        [ResponseType(typeof(Bank))]
-        public async Task<IHttpActionResult> PostBank(Bank bank)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Banks.Add(bank);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = bank.Id }, bank);
-        }
-
-        // DELETE: api/Bank/5
-        [ResponseType(typeof(Bank))]
-        public async Task<IHttpActionResult> DeleteBank(int id)
-        {
-            Bank bank = await db.Banks.FindAsync(id);
-            if (bank == null)
-            {
-                return NotFound();
-            }
-
-            db.Banks.Remove(bank);
-            await db.SaveChangesAsync();
-
-            return Ok(bank);
-        }
-
+       
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                bankDB.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool BankExists(int id)
         {
-            return db.Banks.Count(e => e.Id == id) > 0;
+            return bankDB.Banks.Count(e => e.Id == id) > 0;
         }
     }
 }
