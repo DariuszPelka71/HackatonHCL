@@ -20,7 +20,7 @@ namespace FavouriteAccounts.api.Models
         public int CustomerId { get; set; }
         public int BankId { get; set; }
     
-        public virtual Bank Bank { get; set; }
-        public virtual Customer Customer { get; set; }
+        //public virtual Bank Bank { get; set; }
+        //public virtual Customer Customer { get; set; }
     }
 }
