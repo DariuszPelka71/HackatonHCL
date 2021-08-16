@@ -16,19 +16,23 @@ namespace FavouriteAccounts.api.Controllers
 {
     public class BankController : ApiController
     {
-        private FavouriteAccountsapiContext db = new FavouriteAccountsapiContext();
-
+        private FavouriteAccountsapiContext bankDB;
+        public BankController()
+        {
+            bankDB =  new FavouriteAccountsapiContext();
+        }
+        
         // GET: api/Bank
         public IQueryable<Bank> GetBanks()
         {
-            return db.Banks;
+            return bankDB.Banks;
         }
 
         // GET: api/Bank/5
         [ResponseType(typeof(Bank))]
         public async Task<IHttpActionResult> GetBank(int id)
         {
-            Bank bank = await db.Banks.FindAsync(id);
+            Bank bank = await bankDB.Banks.FindAsync(id);
             if (bank == null)
             {
                 return NotFound();
@@ -51,11 +55,11 @@ namespace FavouriteAccounts.api.Controllers
                 return BadRequest();
             }
 
-            db.Entry(bank).State = EntityState.Modified;
+            bankDB.Entry(bank).State = EntityState.Modified;
 
             try
             {
-                await db.SaveChangesAsync();
+                await bankDB.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,8 +85,8 @@ namespace FavouriteAccounts.api.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Banks.Add(bank);
-            await db.SaveChangesAsync();
+            bankDB.Banks.Add(bank);
+            await bankDB.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = bank.Id }, bank);
         }
@@ -91,14 +95,14 @@ namespace FavouriteAccounts.api.Controllers
         [ResponseType(typeof(Bank))]
         public async Task<IHttpActionResult> DeleteBank(int id)
         {
-            Bank bank = await db.Banks.FindAsync(id);
+            Bank bank = await bankDB.Banks.FindAsync(id);
             if (bank == null)
             {
                 return NotFound();
             }
 
-            db.Banks.Remove(bank);
-            await db.SaveChangesAsync();
+            bankDB.Banks.Remove(bank);
+            await bankDB.SaveChangesAsync();
 
             return Ok(bank);
         }
@@ -107,14 +111,14 @@ namespace FavouriteAccounts.api.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                bankDB.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool BankExists(int id)
         {
-            return db.Banks.Count(e => e.Id == id) > 0;
+            return bankDB.Banks.Count(e => e.Id == id) > 0;
         }
     }
 }

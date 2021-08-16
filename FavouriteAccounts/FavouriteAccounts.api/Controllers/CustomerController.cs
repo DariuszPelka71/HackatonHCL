@@ -16,19 +16,23 @@ namespace FavouriteAccounts.api.Controllers
 {
     public class CustomerController : ApiController
     {
-        private FavouriteAccountsapiContext db = new FavouriteAccountsapiContext();
+        private FavouriteAccountsapiContext customerDB;
+        public CustomerController()
+        {
+            customerDB = new FavouriteAccountsapiContext();
+        }
 
         // GET: api/Customer
         public IQueryable<Customer> GetCustomers()
         {
-            return db.Customers;
+            return customerDB.Customers;
         }
 
         // GET: api/Customer/5
         [ResponseType(typeof(Customer))]
         public async Task<IHttpActionResult> GetCustomer(int id)
         {
-            Customer customer = await db.Customers.FindAsync(id);
+            Customer customer = await customerDB.Customers.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
@@ -51,11 +55,11 @@ namespace FavouriteAccounts.api.Controllers
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+            customerDB.Entry(customer).State = EntityState.Modified;
 
             try
             {
-                await db.SaveChangesAsync();
+                await customerDB.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,8 +85,8 @@ namespace FavouriteAccounts.api.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Customers.Add(customer);
-            await db.SaveChangesAsync();
+            customerDB.Customers.Add(customer);
+            await customerDB.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = customer.Id }, customer);
         }
@@ -91,14 +95,14 @@ namespace FavouriteAccounts.api.Controllers
         [ResponseType(typeof(Customer))]
         public async Task<IHttpActionResult> DeleteCustomer(int id)
         {
-            Customer customer = await db.Customers.FindAsync(id);
+            Customer customer = await customerDB.Customers.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
 
-            db.Customers.Remove(customer);
-            await db.SaveChangesAsync();
+            customerDB.Customers.Remove(customer);
+            await customerDB.SaveChangesAsync();
 
             return Ok(customer);
         }
@@ -107,14 +111,14 @@ namespace FavouriteAccounts.api.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                customerDB.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool CustomerExists(int id)
         {
-            return db.Customers.Count(e => e.Id == id) > 0;
+            return customerDB.Customers.Count(e => e.Id == id) > 0;
         }
     }
 }
