@@ -1,17 +1,35 @@
-﻿@{
-    Layout = null;
+﻿@model FavouriteAccounts.ui.Models.FavouriteAccountModel
+
+@*@{
+        ViewBag.Title = "Index";
+    }*@
+<h3><b>Edit favorite:</b></h3>
+
+@using (Html.BeginForm("Edit", "Favourite", FormMethod.Post, new { id = "frmEdit" }))
+{
+    @Html.AntiForgeryToken()
+    <table>
+
+        <tr>
+            <td>Account Name: </td>
+            <td>@Html.TextBoxFor(m => m.Name)</td>
+        </tr>
+        <tr>
+            <td>IBAN/Account number: </td>
+            <td>@Html.TextBoxFor(m => m.AccountNumber)</td>
+        </tr>
+        <tr>
+            o
+            <td>Bank: </td>
+            <td>@Html.TextBoxFor(m => m.BankName, new { @readonly = "readonly" })</td>
+        </tr>
+        <tr>
+            <td colspan="2"><button value="Save">Submit</button></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="errorMsg" style="color: red;"></div>
+            </td>
+        </tr>
+    </table>
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    aaaa
-    </div>
-</body>
-</html>
