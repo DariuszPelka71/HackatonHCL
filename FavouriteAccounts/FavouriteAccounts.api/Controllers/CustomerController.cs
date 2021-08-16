@@ -2,55 +2,54 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
-using System.Web.Mvc;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
 using FavouriteAccounts.api.Models;
 
 namespace FavouriteAccounts.api.Controllers
 {
-    public class CustomerController : Controller
+    public class CustomerController : ApiController
     {
         private FavoritePayeeAccountsManagementEntities customerDB;
 
-        //Constructor
         public CustomerController()
         {
-            customerDB  = new FavoritePayeeAccountsManagementEntities();
+            customerDB = new FavoritePayeeAccountsManagementEntities();
         }
-
-        // GET: Customers
         /// <summary>
-        /// Action to Get Customers
+        /// Action to get the list of customers
         /// </summary>
         /// <returns></returns>
-        public async Task<ActionResult> Index()
+        // GET: api/Customer
+        public IQueryable<Customer> GetCustomers()
         {
-            var customers = customerDB.Customers;
-            return View(await customers.ToListAsync());
+            return customerDB.Customers;
         }
 
-        // GET: Customers/Details/5
+        // GET: api/Customer/5
         /// <summary>
-        /// Action to get Details of customer based on id
+        /// Action to get the customer based on ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<ActionResult> Details(int? id)
+        [ResponseType(typeof(Customer))]
+        public async Task<IHttpActionResult> GetCustomer(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Customer customer = await customerDB.Customers.FindAsync(id);
             if (customer == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
-            return View(customer);
+
+            return Ok(customer);
         }
+
+        
 
         protected override void Dispose(bool disposing)
         {
@@ -61,7 +60,7 @@ namespace FavouriteAccounts.api.Controllers
             base.Dispose(disposing);
         }
 
-    private bool CustomerExists(int id)
+        private bool CustomerExists(int id)
         {
             return customerDB.Customers.Count(e => e.Id == id) > 0;
         }

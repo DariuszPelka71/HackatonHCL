@@ -2,55 +2,56 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
-using System.Web.Mvc;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
 using FavouriteAccounts.api.Models;
 
 namespace FavouriteAccounts.api.Controllers
 {
-    public class BankController : Controller
+    public class BankController : ApiController
     {
-        private FavoritePayeeAccountsManagementEntities bankDB;
+        private FavoritePayeeAccountsManagementEntities bankDB = new FavoritePayeeAccountsManagementEntities();
 
-        //Constructor
         public BankController()
         {
             bankDB = new FavoritePayeeAccountsManagementEntities();
         }
 
-        // GET: Banks
+
+        // GET: api/Bank
         /// <summary>
-        /// Action to Get Banks list
+        /// Method to get Banks list
         /// </summary>
         /// <returns></returns>
-        public async Task<ActionResult> Index()
+        public IQueryable<Bank> GetBanks()
         {
-            var banks = bankDB.Banks;
-            return View(await banks.ToListAsync());
+            return bankDB.Banks;
         }
 
-        // GET: Banks/Details/5
+        // GET: api/Bank/5
         /// <summary>
-        /// Action to get Details of bank based on id
+        /// Method to get Bank Detail based on Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<ActionResult> Details(int? id)
+        [ResponseType(typeof(Bank))]
+        public async Task<IHttpActionResult> GetBank(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Bank bank = await bankDB.Banks.FindAsync(id);
             if (bank == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
-            return View(bank);
+
+            return Ok(bank);
         }
+
+       
 
         protected override void Dispose(bool disposing)
         {
@@ -61,12 +62,7 @@ namespace FavouriteAccounts.api.Controllers
             base.Dispose(disposing);
         }
 
-        /// <summary>
-        /// method to check if banks exists
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        private bool CustomerExists(int id)
+        private bool BankExists(int id)
         {
             return bankDB.Banks.Count(e => e.Id == id) > 0;
         }

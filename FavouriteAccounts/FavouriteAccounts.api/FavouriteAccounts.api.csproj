@@ -199,6 +199,7 @@
       <DependentUpon>FavouriteAccountsModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\BankRepository.cs" />
     <Compile Include="Repository\FavoriteAccount.cs" />
     <Compile Include="Repository\IFavoriteAccount.cs" />
   </ItemGroup>
