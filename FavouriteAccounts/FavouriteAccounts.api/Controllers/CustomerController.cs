@@ -2,109 +2,54 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
-using FavouriteAccounts.api.Data;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
 using FavouriteAccounts.api.Models;
 
 namespace FavouriteAccounts.api.Controllers
 {
-    public class CustomerController : ApiController
+    public class CustomerController : Controller
     {
-        private FavouriteAccountsapiContext customerDB;
+        private FavoritePayeeAccountsManagementEntities customerDB;
+
+        //Constructor
         public CustomerController()
         {
-            customerDB = new FavouriteAccountsapiContext();
+            customerDB  = new FavoritePayeeAccountsManagementEntities();
         }
 
-        // GET: api/Customer
-        public IQueryable<Customer> GetCustomers()
+        // GET: Customers
+        /// <summary>
+        /// Action to Get Customers
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ActionResult> Index()
         {
-            return customerDB.Customers;
+            var customers = customerDB.Customers;
+            return View(await customers.ToListAsync());
         }
 
-        // GET: api/Customer/5
-        [ResponseType(typeof(Customer))]
-        public async Task<IHttpActionResult> GetCustomer(int id)
+        // GET: Customers/Details/5
+        /// <summary>
+        /// Action to get Details of customer based on id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> Details(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Customer customer = await customerDB.Customers.FindAsync(id);
             if (customer == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(customer);
-        }
-
-        // PUT: api/Customer/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutCustomer(int id, Customer customer)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != customer.Id)
-            {
-                return BadRequest();
-            }
-
-            customerDB.Entry(customer).State = EntityState.Modified;
-
-            try
-            {
-                await customerDB.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CustomerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Customer
-        [ResponseType(typeof(Customer))]
-        public async Task<IHttpActionResult> PostCustomer(Customer customer)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            customerDB.Customers.Add(customer);
-            await customerDB.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = customer.Id }, customer);
-        }
-
-        // DELETE: api/Customer/5
-        [ResponseType(typeof(Customer))]
-        public async Task<IHttpActionResult> DeleteCustomer(int id)
-        {
-            Customer customer = await customerDB.Customers.FindAsync(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            customerDB.Customers.Remove(customer);
-            await customerDB.SaveChangesAsync();
-
-            return Ok(customer);
+            return View(customer);
         }
 
         protected override void Dispose(bool disposing)
@@ -116,7 +61,7 @@ namespace FavouriteAccounts.api.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CustomerExists(int id)
+    private bool CustomerExists(int id)
         {
             return customerDB.Customers.Count(e => e.Id == id) > 0;
         }
