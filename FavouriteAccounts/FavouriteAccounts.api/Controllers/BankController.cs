@@ -15,8 +15,7 @@ namespace FavouriteAccounts.api.Controllers
 {
     public class BankController : ApiController
     {
-        private FavoritePayeeAccountsManagementEntities bankDB = new FavoritePayeeAccountsManagementEntities();
-
+        private FavoritePayeeAccountsManagementEntities bankDB;
         public BankController()
         {
             bankDB = new FavoritePayeeAccountsManagementEntities();
