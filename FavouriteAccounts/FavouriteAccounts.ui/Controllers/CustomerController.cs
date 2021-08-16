@@ -8,6 +8,7 @@ using System.Web.Optimization;
 using FavouriteAccounts.ui.Models;
 using System.Net.Http;
 using FavouriteAccounts.ui.Helper;
+using Newtonsoft.Json;
 
 namespace FavouriteAccounts.ui.Controllers
 {
@@ -25,17 +26,21 @@ namespace FavouriteAccounts.ui.Controllers
         {
             try
             {
-                //todo after syncing with api
-                HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("Customer/Details/" + customer.Id.ToString()).Result;
-
+                HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("Customer/" + customer.Id.ToString()).Result;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var customerName = response.Content.ReadAsStringAsync();
+                    var customerData = response.Content.ReadAsStringAsync();
+                    var result = new JsonResult
+                    {
+                        Data = JsonConvert.DeserializeObject<CustomerModel>(customerData.Result)
+                    };
+                    //todo test data for time beeing
+                    Session["CustomerId"] = 1;
                     Session["CustomerName"] = "Profesor";
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Favourite");
                 }
-                return View();
+                return RedirectToAction("Index");
             }
             catch
             {

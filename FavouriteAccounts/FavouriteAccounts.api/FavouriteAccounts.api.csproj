@@ -170,7 +170,6 @@
     <Compile Include="Controllers\FavoriteAccountsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="Data\FavouriteAccountsapiContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -200,8 +199,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BankRepository.cs" />
+    <Compile Include="Repository\FavoriteAccountRepo.cs" />
     <Compile Include="Repository\CustomerRepository.cs" />
-    <Compile Include="Repository\FavoriteAccount.cs" />
     <Compile Include="Repository\IFavoriteAccount.cs" />
   </ItemGroup>
   <ItemGroup>

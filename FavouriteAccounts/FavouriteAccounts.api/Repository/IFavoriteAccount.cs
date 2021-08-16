@@ -9,6 +9,10 @@ namespace FavouriteAccounts.api.Repository
 {
     interface IFavoriteAccount
     {
-        //IQueryable<Fav> GetEmployees();
+        IQueryable<FavoriteAccount> Get();
+        void Add(FavoriteAccount favoriteAccount);
+        void Edit(FavoriteAccount favoriteAccount);
+        void Delete(int id);
+        bool Exists(int id);
     }
 }

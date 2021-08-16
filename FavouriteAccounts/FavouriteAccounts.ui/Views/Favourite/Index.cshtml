@@ -8,45 +8,46 @@
 <h2>@ViewBag.Title</h2>
 
 
+<p>List of favourites, userId: @Session["CustomerId"], userName: @Session["CustomerName"]</p>
 
 
-<table class="table">
+
+<!--<table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Id)
+            Html.DisplayNameFor(model => model.Id)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BankName)
+            Html.DisplayNameFor(model => model.BankName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AccountNumber)
+            Html.DisplayNameFor(model => model.AccountNumber)
 
         </th>
     </tr>
 
-    @foreach (var item in Model)
+    foreach (var item in Model)
     {
-        <tr id="@item.Id">
+        <tr id="item.Id">
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BankName)
+                Html.DisplayFor(modelItem => item.BankName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AccountNumber)
+                Html.DisplayFor(modelItem => item.AccountNumber)
             </td>
-            <td>
+            <td>-->
                 @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
-            </td>
+            <!--</td>
         </tr>
     }
 
-</table>
-
+</table>-->
