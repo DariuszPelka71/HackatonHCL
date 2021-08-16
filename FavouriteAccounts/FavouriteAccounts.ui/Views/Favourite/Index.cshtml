@@ -8,45 +8,4 @@
 <h2>@ViewBag.Title</h2>
 
 
-
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BankName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountNumber)
-
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr id="@item.Id">
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BankName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountNumber)
-            </td>
-            <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
-            </td>
-        </tr>
-    }
-
-</table>
-
+<p>list of favourites, userId: @Session["CustomerId"], @Session["CustomerName"]</p>
