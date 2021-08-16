@@ -1,5 +1,6 @@
 ﻿using FavouriteAccounts.ui.Helper;
 using FavouriteAccounts.ui.Models;
+using FavouriteAccounts.ui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,14 @@ namespace FavouriteAccounts.ui.Controllers
 {
     public class FavouriteController : Controller
     {
+        IFavouriteManagementService favouriteManagementService;
+
+        public FavouriteController()
+        {
+            // This should be replaced by dependency injection! so object should come from parameter of the controller!
+            favouriteManagementService = new FavouriteManagementService();
+        }
+
         // GET: Favourite
         public ActionResult Index()
         {
@@ -41,8 +50,10 @@ namespace FavouriteAccounts.ui.Controllers
                 // Validate bank account number
                 if (model.AccountNumber.Length != 20)
                 {
-
+                    throw new ArgumentException("Invalid length of account number.Account number should be 20 characters long.");
                 }
+                var ibanRetriever = new IBANRetriever();
+                var ibanCode = ibanRetriever.RetrieveIBANCodeFromAcccountNumber(model.AccountNumber);
                 model.BankId = 2;
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
                 var data = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
