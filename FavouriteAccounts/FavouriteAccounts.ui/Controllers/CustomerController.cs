@@ -7,6 +7,7 @@ using System.Web.Routing;
 using System.Web.Optimization;
 using FavouriteAccounts.ui.Models;
 using System.Net.Http;
+using FavouriteAccounts.ui.Helper;
 
 namespace FavouriteAccounts.ui.Controllers
 {
@@ -24,12 +25,15 @@ namespace FavouriteAccounts.ui.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                // call api with result ok for the login comparison
+                HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("Customer/" + customer.Id.ToString()).Result;
 
-                HttpResponseMessage response = ApiClient.webApiClient.PostAsync("Customer", customer.Id.ToString()).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    //todo go to the list page
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                return View();
             }
             catch
             {
