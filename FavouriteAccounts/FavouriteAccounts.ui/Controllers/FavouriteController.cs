@@ -1,6 +1,10 @@
-﻿using System;
+﻿using FavouriteAccounts.ui.Helper;
+using FavouriteAccounts.ui.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -28,11 +32,21 @@ namespace FavouriteAccounts.ui.Controllers
 
         // POST: Favourite/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FavouriteAccountModel model)
         {
             try
             {
-                // TODO: Add insert logic here
+                model.CustomerId = 1; //To be replaced by the value from Session variable from login page
+
+                // Validate bank account number
+                if (model.AccountNumber.Length != 20)
+                {
+
+                }
+                model.BankId = 2;
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
+                var data = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = FavouriteApiClient.webApiClient.PostAsync("FavoriteAccounts", data).Result;
 
                 return RedirectToAction("Index");
             }
@@ -50,11 +64,15 @@ namespace FavouriteAccounts.ui.Controllers
 
         // POST: Favourite/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(FavouriteAccountModel model)
         {
             try
             {
-                // TODO: Add update logic here
+                model.CustomerId = 1; //To be replaced by the value from Session variable from login page
+                model.BankId = 2;
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
+                var data = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = FavouriteApiClient.webApiClient.PutAsync("FavoriteAccounts", data).Result;
 
                 return RedirectToAction("Index");
             }
