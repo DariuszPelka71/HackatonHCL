@@ -62,7 +62,7 @@ namespace FavouriteAccounts.ui.Controllers
                 var ibanRetriever = new IBANRetriever();
                 var ibanCode = ibanRetriever.RetrieveIBANCodeFromAcccountNumber(model.AccountNumber);
                 var bank = this.bankService.GetBank(ibanCode);
-                model.BankId = 2;//Should be bank.ibanCode!
+                model.BankId = 2;//Should be bank.Id!
                 var status = favouriteManagementService.AddFavouriteAccount(model);
 
                 return RedirectToAction("Index");
@@ -89,7 +89,7 @@ namespace FavouriteAccounts.ui.Controllers
                 var ibanRetriever = new IBANRetriever();
                 var ibanCode = ibanRetriever.RetrieveIBANCodeFromAcccountNumber(model.AccountNumber);
                 var bank = this.bankService.GetBank(ibanCode);
-                model.BankId = 2;//Should be bank.ibanCode!
+                model.BankId = 2;//Should be bank.Id!
                 var status = favouriteManagementService.AmendFavouriteAccount(model);
 
                 return RedirectToAction("Index");
@@ -97,6 +97,7 @@ namespace FavouriteAccounts.ui.Controllers
             catch
             {
                 return View();
+
             }
         }
 
