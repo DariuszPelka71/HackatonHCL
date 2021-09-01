@@ -29,9 +29,16 @@ namespace FavouriteAccounts.api.Controllers
         }
 
         // GET: api/FavoriteAccounts
-        public IQueryable<FavoriteAccount> GetFavoriteAccounts()
+        //public IQueryable<FavoriteAccount> GetFavoriteAccounts()
+        //{
+        //    var temp = db.FavoriteAccounts;
+        //    return db.FavoriteAccounts;
+        //}
+
+        public IEnumerable<FavoriteAccount> GetFavoriteAccounts()
         {
-            return db.FavoriteAccounts;
+            var temp = db.FavoriteAccounts.ToList();
+            return db.FavoriteAccounts.ToList();
         }
 
         // GET: api/FavoriteAccounts/5
