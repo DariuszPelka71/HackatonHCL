@@ -1,13 +1,13 @@
 ﻿using FavouriteAccounts.ui.Helper;
 using FavouriteAccounts.ui.Models;
 using FavouriteAccounts.ui.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Net.Http;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace FavouriteAccounts.ui.Controllers
 {
@@ -26,12 +26,37 @@ namespace FavouriteAccounts.ui.Controllers
         // GET: Favourite
         public ActionResult Index()
         {
-            IEnumerable<FavouriteAccountModel> favouriteList;
+            IEnumerable<FavouriteAccountModel> favouriteList = new List<FavouriteAccountModel>();
             HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts").Result;
 
-            // todo manage data logic from response to list
+            if (response.Content is object && response.Content.Headers.ContentType.MediaType == "application/json")
+            {
+                var contentStream = response.Content.ReadAsStreamAsync();
+                var streamReader = new StreamReader(contentStream.Result);
+                var jsonReader = new JsonTextReader(streamReader);
 
-            return View();
+                JsonSerializer serializer = new JsonSerializer();
+
+                try
+                {
+                    //todo deserialize
+                    favouriteList = serializer.Deserialize<List<FavouriteAccountModel>>(jsonReader);
+                }
+                catch (JsonReaderException)
+                {
+                    Console.WriteLine("Invalid JSON.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("HTTP Response was invalid and cannot be deserialised.");
+            }
+
+            // todo manage data logic from response to list
+            // mocked data here
+            favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 1, AccountNumber = "123123", BankId = 1, BankName = "ING", CustomerId = 1, Name = "Mocked - Investment Account" } };
+
+            return View(favouriteList);
         }
 
         // GET: Favourite/Details/5

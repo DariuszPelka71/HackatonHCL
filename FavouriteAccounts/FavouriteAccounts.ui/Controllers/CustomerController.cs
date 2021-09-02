@@ -35,9 +35,8 @@ namespace FavouriteAccounts.ui.Controllers
                     {
                         Data = JsonConvert.DeserializeObject<CustomerModel>(customerData.Result)
                     };
-                    //todo test data for time beeing
-                    Session["CustomerId"] = 1;
-                    Session["CustomerName"] = "Profesor";
+                    Session["CustomerId"] = ((CustomerModel)result.Data).Id;
+                    Session["CustomerName"] = ((CustomerModel)result.Data).Name;
                     return RedirectToAction("Index", "Favourite");
                 }
                 return RedirectToAction("Index");
