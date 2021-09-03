@@ -23,34 +23,46 @@ namespace FavouriteAccounts.ui.Controllers
             bankService = new BankService();
         }
 
-        // GET: Favourite
+        // GET: Favourite/Index/1
         public ActionResult Index()
         {
             IEnumerable<FavouriteAccountModel> favouriteList = new List<FavouriteAccountModel>();
             HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts").Result;
 
-            if (response.Content is object && response.Content.Headers.ContentType.MediaType == "application/json")
-            {
-                var contentStream = response.Content.ReadAsStreamAsync();
-                var streamReader = new StreamReader(contentStream.Result);
-                var jsonReader = new JsonTextReader(streamReader);
+            var customerData = response.Content.ReadAsStringAsync();
+            var jsonString = customerData.Result;
+            var temp = JsonConvert.DeserializeObject<List<FavouriteAccountModel>>(customerData.Result);
 
-                JsonSerializer serializer = new JsonSerializer();
 
-                try
-                {
-                    //todo deserialize
-                    favouriteList = serializer.Deserialize<List<FavouriteAccountModel>>(jsonReader);
-                }
-                catch (JsonReaderException)
-                {
-                    Console.WriteLine("Invalid JSON.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("HTTP Response was invalid and cannot be deserialised.");
-            }
+
+            //if (response.Content is object && response.Content.Headers.ContentType.MediaType == "application/json")
+            //{
+            //    var contentStream = response.Content.ReadAsStreamAsync();
+            //    var temp3 = contentStream.ToString();
+            //    var streamReader = new StreamReader(contentStream.Result);
+            //    var jsonReader = new JsonTextReader(streamReader);
+
+            //    JsonSerializer serializer = new JsonSerializer();
+
+            //    try
+            //    {
+            //        //var temp = JsonConvert.DeserializeObject<List<FavouriteAccountModel>>(jsonReader.ReadAsString());
+            //        //todo deserialize
+            //        var temp = Newtonsoft.Json.JsonConvert.DeserializeObject<List<FavouriteAccountModel>>(contentStream.ToString());
+
+
+            //        favouriteList = serializer.Deserialize<List<FavouriteAccountModel>>(jsonReader);
+            //    }
+            //    catch (JsonReaderException)
+            //    {
+            //        Console.WriteLine("Invalid JSON.");
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("HTTP Response was invalid and cannot be deserialised.");
+            //}
+
 
             // todo manage data logic from response to list
             // mocked data here

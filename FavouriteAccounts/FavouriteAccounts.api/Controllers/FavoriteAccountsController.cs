@@ -33,13 +33,14 @@ namespace FavouriteAccounts.api.Controllers
             _favoriteAccount = favoriteAccount;
         }
 
-        // GET: api/FavoriteAccounts
+        // GET: api/FavoriteAccounts/1
         [ResponseType(typeof(IEnumerable<FavoriteAccount>))]
         public IEnumerable<FavoriteAccount> GetFavoriteAccounts()
         {
-            //var temp = db.FavoriteAccounts.ToList();
-            return _favoriteAccount.Get();
-            //return db.FavoriteAccounts.ToList();
+            // todo mocked data
+            IEnumerable<FavoriteAccount> favoriteAccountsList = _favoriteAccount.Get().Where(x => x.CustomerId == 1).AsEnumerable();
+            var favouriteAccountsListConverted = favoriteAccountsList.ToList();
+            return favoriteAccountsList.ToList();
         }
 
         // GET: api/FavoriteAccounts/5
