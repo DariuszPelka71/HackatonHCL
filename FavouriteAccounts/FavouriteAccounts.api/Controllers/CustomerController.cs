@@ -11,9 +11,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using FavouriteAccounts.api.Models;
 using FavouriteAccounts.api.Repository;
+using FavouriteAccounts.api.Utility;
 
 namespace FavouriteAccounts.api.Controllers
 {
+    [CustomExceptionFilter]
     public class CustomerController : ApiController
     {
         private ICustomerRepository customerRepository;
