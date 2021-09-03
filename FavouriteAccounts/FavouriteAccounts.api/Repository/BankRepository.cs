@@ -7,7 +7,7 @@ using FavouriteAccounts.api.Models;
 
 namespace FavouriteAccounts.api.Repository
 {
-    public class BankRepository
+    public class BankRepository : IBankRepository
     {
         private FavoritePayeeAccountsManagementEntities bankDB;
 
@@ -16,17 +16,31 @@ namespace FavouriteAccounts.api.Repository
             bankDB = new FavoritePayeeAccountsManagementEntities();
         }
 
+        /// <summary>
+        /// Get the Bank list
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<Bank> GetBanks()
         {
             return bankDB.Banks.AsQueryable();
         }
 
-        public Bank GetBank(string Code)
+        /// <summary>
+        /// Get bank details based on Bank code
+        /// </summary>
+        /// <param name="bankCode"></param>
+        /// <returns></returns>
+        public Bank GetBank(string bankCode)
         {
-            var bank = bankDB.Banks.Where(e=> e.Code == Code);
+            var bank = bankDB.Banks.Where(e=> e.Code == bankCode);
             return bank.FirstOrDefault();
         }
 
+        /// <summary>
+        /// Check if bank exists
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool BankExists(int id)
         {
             return bankDB.Banks.Count(e => e.Id == id) > 0;

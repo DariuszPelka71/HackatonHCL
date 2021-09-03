@@ -16,11 +16,11 @@ namespace FavouriteAccounts.api.Controllers
 {
     public class CustomerController : ApiController
     {
-        private CustomerRepository customerRepository;
+        private ICustomerRepository customerRepository;
 
-        public CustomerController()
+        public CustomerController(ICustomerRepository _customerRepository)
         {
-            customerRepository = new CustomerRepository();
+            customerRepository = _customerRepository;
         }
         /// <summary>
         /// Action to get the list of customers

@@ -7,9 +7,10 @@ using FavouriteAccounts.api.Models;
 
 namespace FavouriteAccounts.api.Repository
 {
-    interface IFavoriteAccount
+    public interface IFavoriteAccount
     {
         IQueryable<FavoriteAccount> Get();
+        FavoriteAccount GetById(int id);
         void Add(FavoriteAccount favoriteAccount);
         void Edit(FavoriteAccount favoriteAccount);
         void Delete(int id);

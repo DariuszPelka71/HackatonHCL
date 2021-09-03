@@ -25,6 +25,17 @@ namespace FavouriteAccounts.api.Repository
         }
 
         /// <summary>
+        /// Get List of Favorite Account.
+        /// </summary>
+        /// <returns></returns>
+        public FavoriteAccount GetById(int id)
+        {
+            return _db.FavoriteAccounts.FirstOrDefault(x => x.Id == id); 
+        }
+
+
+
+        /// <summary>
         /// Add new Favorite Account.
         /// </summary>
         /// <param name="favoriteAccount"></param>

@@ -16,23 +16,27 @@ namespace FavouriteAccounts.api.Controllers
 {
     public class BankController : ApiController
     {
-        private BankRepository  bankRepository;
+        private IBankRepository  _bankRepository;
 
         /// <summary>
         /// Constructor to initialize Context
         /// </summary>
-        public BankController()
+          public BankController(IBankRepository bankRepository)
         {
-            bankRepository = new BankRepository();
+            _bankRepository = bankRepository;
         }
-        /// <summary>
-        /// Action method to get bank list
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/Bank
-        public IQueryable<Bank> GetBanks()
+    //public BankController()
+    //{
+    //    bankRepository = new BankRepository();
+    //}
+    /// <summary>
+    /// Action method to get bank list
+    /// </summary>
+    /// <returns></returns>
+    // GET: api/Bank
+    public IQueryable<Bank> GetBanks()
         {
-            return bankRepository.GetBanks();
+            return _bankRepository.GetBanks();
         }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace FavouriteAccounts.api.Controllers
         [ResponseType(typeof(Bank))]
         public IHttpActionResult GetBank(string Code)
         {
-            Bank bank =  bankRepository.GetBank(Code);
+            Bank bank =  _bankRepository.GetBank(Code);
             if (bank == null)
             {
                 return NotFound();
@@ -55,7 +59,7 @@ namespace FavouriteAccounts.api.Controllers
 
         public bool BankExists(int id)
         {
-            return bankRepository.BankExists(id);
+            return _bankRepository.BankExists(id);
         }
     }
 }

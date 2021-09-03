@@ -17,35 +17,44 @@ namespace FavouriteAccounts.api.Controllers
 {
     public class FavoriteAccountsController : ApiController
     {
-        private readonly FavoritePayeeAccountsManagementEntities db;
+        //private readonly FavoritePayeeAccountsManagementEntities db;
         private readonly IFavoriteAccount _favoriteAccount;
         private static readonly ILog _log = LogManager.GetLogger(typeof(FavoriteAccount));
 
 
-        public FavoriteAccountsController()
+        //public FavoriteAccountsController()
+        //{
+        //    //db = new FavoritePayeeAccountsManagementEntities();
+        //    _favoriteAccount = new FavoriteAccountRepo();
+        //}
+        public FavoriteAccountsController(IFavoriteAccount favoriteAccount)
         {
-            db = new FavoritePayeeAccountsManagementEntities();
-            _favoriteAccount = new FavoriteAccountRepo();
+            //db = new FavoritePayeeAccountsManagementEntities();
+            _favoriteAccount = favoriteAccount;
         }
 
-        // GET: api/FavoriteAccounts
-        //public IQueryable<FavoriteAccount> GetFavoriteAccounts()
-        //{
-        //    var temp = db.FavoriteAccounts;
-        //    return db.FavoriteAccounts;
-        //}
 
+
+        //// GET: api/FavoriteAccounts
+        ////public IQueryable<FavoriteAccount> GetFavoriteAccounts()
+        ////{
+        ////    var temp = db.FavoriteAccounts;
+        ////    return db.FavoriteAccounts;
+        ////}
+
+        // GET: api/FavoriteAccounts
         public IEnumerable<FavoriteAccount> GetFavoriteAccounts()
         {
-            var temp = db.FavoriteAccounts.ToList();
-            return db.FavoriteAccounts.ToList();
+            //var temp = db.FavoriteAccounts.ToList();
+            return _favoriteAccount.Get();
+            //return db.FavoriteAccounts.ToList();
         }
 
         // GET: api/FavoriteAccounts/5
         [ResponseType(typeof(FavoriteAccount))]
-        public async Task<IHttpActionResult> GetFavoriteAccount(int id)
+        public IHttpActionResult GetFavoriteAccount(int id)
         {
-            FavoriteAccount favoriteAccount = await db.FavoriteAccounts.FindAsync(id);
+            FavoriteAccount favoriteAccount = _favoriteAccount.GetById(id);
             if (favoriteAccount == null)
             {
                 return NotFound();
@@ -56,7 +65,7 @@ namespace FavouriteAccounts.api.Controllers
 
         // PUT: api/FavoriteAccounts/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutFavoriteAccount(int id, FavoriteAccount favoriteAccount)
+        public IHttpActionResult PutFavoriteAccount(int id, FavoriteAccount favoriteAccount)
         {
             if (!ModelState.IsValid)
             {
@@ -68,11 +77,12 @@ namespace FavouriteAccounts.api.Controllers
                 return BadRequest();
             }
 
-            db.Entry(favoriteAccount).State = EntityState.Modified;
+            //db.Entry(favoriteAccount).State = EntityState.Modified;
 
             try
             {
-                await db.SaveChangesAsync();
+                _favoriteAccount.Edit(favoriteAccount);
+                //await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -91,47 +101,50 @@ namespace FavouriteAccounts.api.Controllers
 
         // POST: api/FavoriteAccounts
         [ResponseType(typeof(FavoriteAccount))]
-        public async Task<IHttpActionResult> PostFavoriteAccount(FavoriteAccount favoriteAccount)
+        public  IHttpActionResult PostFavoriteAccount(FavoriteAccount favoriteAccount)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.FavoriteAccounts.Add(favoriteAccount);
-            await db.SaveChangesAsync();
+            _favoriteAccount.Add(favoriteAccount);
+            //db.FavoriteAccounts.Add(favoriteAccount);
+            //await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = favoriteAccount.Id }, favoriteAccount);
         }
 
         // DELETE: api/FavoriteAccounts/5
         [ResponseType(typeof(FavoriteAccount))]
-        public async Task<IHttpActionResult> DeleteFavoriteAccount(int id)
+        public IHttpActionResult DeleteFavoriteAccount(int id)
         {
-            FavoriteAccount favoriteAccount = await db.FavoriteAccounts.FindAsync(id);
-            if (favoriteAccount == null)
-            {
-                return NotFound();
-            }
+            //FavoriteAccount favoriteAccount = await db.FavoriteAccounts.FindAsync(id);
+            //if (favoriteAccount == null)
+            //{
+            //    return NotFound();
+            //}
 
-            db.FavoriteAccounts.Remove(favoriteAccount);
-            await db.SaveChangesAsync();
+            _favoriteAccount.Delete(id);
+            //db.FavoriteAccounts.Remove(favoriteAccount);
+            //await db.SaveChangesAsync();
 
-            return Ok(favoriteAccount);
+            return Ok(_favoriteAccount);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
 
         private bool FavoriteAccountExists(int id)
         {
-            return db.FavoriteAccounts.Count(e => e.Id == id) > 0;
+            return _favoriteAccount.Exists(id);
+            //return db.FavoriteAccounts.Count(e => e.Id == id) > 0;
         }
     }
 }
