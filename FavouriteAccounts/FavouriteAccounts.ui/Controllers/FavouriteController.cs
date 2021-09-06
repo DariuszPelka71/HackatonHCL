@@ -32,8 +32,8 @@ namespace FavouriteAccounts.ui.Controllers
             favouriteList = response.Content.ReadAsAsync<List<FavouriteAccountModel>>().Result;
             return View(favouriteList);
 
-            // mocked data here
-            //favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 1, AccountNumber = "123123", BankId = 1, BankName = "ING", CustomerId = 1, Name = "Mocked - Investment Account" },
+            //mocked data here
+            //var favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 1, AccountNumber = "123123", BankId = 1, BankName = "ING", CustomerId = 1, Name = "Mocked - Investment Account" },
             //                                                    new FavouriteAccountModel { Id = 2, AccountNumber = "1253123", BankId = 1, BankName = "Euroclear", CustomerId = 1, Name = "Mocked - Private Account" }};
             //return View(favouriteList);
         }
@@ -80,7 +80,11 @@ namespace FavouriteAccounts.ui.Controllers
         // GET: Favourite/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var favouriteModel = new FavouriteAccountModel();
+            HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts/" + id.ToString()).Result;
+            favouriteModel = response.Content.ReadAsAsync<FavouriteAccountModel>().Result;
+
+            return View(favouriteModel);
         }
 
         // POST: Favourite/Edit/5
@@ -89,11 +93,11 @@ namespace FavouriteAccounts.ui.Controllers
         {
             try
             {
-                model.CustomerId = 1; //To be replaced by the value from Session variable from login page
+                model.Name = model.Name;
                 var ibanRetriever = new IBANRetriever();
                 var ibanCode = ibanRetriever.RetrieveIBANCodeFromAcccountNumber(model.AccountNumber);
                 var bank = this.bankService.GetBank(ibanCode);
-                model.BankId = 2;//Should be bank.Id!
+                //model.BankId = 1;//Should be bank.Id!
                 var status = favouriteManagementService.AmendFavouriteAccount(model);
 
                 return RedirectToAction("Index");

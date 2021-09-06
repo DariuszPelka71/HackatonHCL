@@ -28,7 +28,7 @@ namespace FavouriteAccounts.ui.Services
         {
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
             var data = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = FavouriteApiClient.webApiClient.PutAsync("FavoriteAccounts", data).Result;
+            HttpResponseMessage response = FavouriteApiClient.webApiClient.PutAsync("FavoriteAccounts/" + model.Id.ToString(), data).Result;
             return 0;
         }
 
