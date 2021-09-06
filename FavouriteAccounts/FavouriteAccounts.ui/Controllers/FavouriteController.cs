@@ -112,7 +112,7 @@ namespace FavouriteAccounts.ui.Controllers
         // GET: Favourite/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(id);
         }
 
         // POST: Favourite/Delete/5
@@ -121,7 +121,16 @@ namespace FavouriteAccounts.ui.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                HttpResponseMessage result;
+
+                var deleteEmployeeTask = FavouriteApiClient.webApiClient.DeleteAsync("FavoriteAccounts/" + id.ToString()).Result;
+                //deleteEmployeeTask.Wait();
+                //result = deleteEmployeeTask.Result;
+
+                if (deleteEmployeeTask.IsSuccessStatusCode)
+                    return RedirectToAction("Index");
+                else
+                    return View();
 
                 return RedirectToAction("Index");
             }
