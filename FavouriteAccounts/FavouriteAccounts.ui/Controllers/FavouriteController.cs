@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Mvc;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
@@ -23,52 +24,18 @@ namespace FavouriteAccounts.ui.Controllers
             bankService = new BankService();
         }
 
-        // GET: Favourite/Index/1
+        // GET: Favourite/Index
         public ActionResult Index()
         {
-            IEnumerable<FavouriteAccountModel> favouriteList = new List<FavouriteAccountModel>();
+            IEnumerable<FavouriteAccountModel> favouriteList;
             HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts").Result;
-
-            var customerData = response.Content.ReadAsStringAsync();
-            var jsonString = customerData.Result;
-            var temp = JsonConvert.DeserializeObject<List<FavouriteAccountModel>>(customerData.Result);
-
-
-
-            //if (response.Content is object && response.Content.Headers.ContentType.MediaType == "application/json")
-            //{
-            //    var contentStream = response.Content.ReadAsStreamAsync();
-            //    var temp3 = contentStream.ToString();
-            //    var streamReader = new StreamReader(contentStream.Result);
-            //    var jsonReader = new JsonTextReader(streamReader);
-
-            //    JsonSerializer serializer = new JsonSerializer();
-
-            //    try
-            //    {
-            //        //var temp = JsonConvert.DeserializeObject<List<FavouriteAccountModel>>(jsonReader.ReadAsString());
-            //        //todo deserialize
-            //        var temp = Newtonsoft.Json.JsonConvert.DeserializeObject<List<FavouriteAccountModel>>(contentStream.ToString());
-
-
-            //        favouriteList = serializer.Deserialize<List<FavouriteAccountModel>>(jsonReader);
-            //    }
-            //    catch (JsonReaderException)
-            //    {
-            //        Console.WriteLine("Invalid JSON.");
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine("HTTP Response was invalid and cannot be deserialised.");
-            //}
-
-
-            // todo manage data logic from response to list
-            // mocked data here
-            favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 1, AccountNumber = "123123", BankId = 1, BankName = "ING", CustomerId = 1, Name = "Mocked - Investment Account" } };
-
+            favouriteList = response.Content.ReadAsAsync<List<FavouriteAccountModel>>().Result;
             return View(favouriteList);
+
+            // mocked data here
+            //favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 1, AccountNumber = "123123", BankId = 1, BankName = "ING", CustomerId = 1, Name = "Mocked - Investment Account" },
+            //                                                    new FavouriteAccountModel { Id = 2, AccountNumber = "1253123", BankId = 1, BankName = "Euroclear", CustomerId = 1, Name = "Mocked - Private Account" }};
+            //return View(favouriteList);
         }
 
         // GET: Favourite/Details/5
