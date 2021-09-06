@@ -1,7 +1,9 @@
-﻿using System;
+﻿using FavouriteAccounts.api.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 
 namespace FavouriteAccounts.api
 {
@@ -14,7 +16,10 @@ namespace FavouriteAccounts.api
             var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
-
+            //Custom Exeption Filter
+            config.Filters.Add(new CustomExceptionFilterAttribute());
+            //Global Exception Handlers
+            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
             // Web API routes
             config.MapHttpAttributeRoutes();
 

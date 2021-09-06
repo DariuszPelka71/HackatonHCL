@@ -218,6 +218,9 @@
     <Compile Include="Repository\IBankRepository.cs" />
     <Compile Include="Repository\ICustomerRepository.cs" />
     <Compile Include="Repository\IFavoriteAccount.cs" />
+    <Compile Include="Utility\CustomException.cs" />
+    <Compile Include="Utility\CustomExceptionFilterAttribute.cs" />
+    <Compile Include="Utility\GlobalExceptionHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

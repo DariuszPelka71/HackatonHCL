@@ -11,10 +11,12 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using FavouriteAccounts.api.Models;
 using FavouriteAccounts.api.Repository;
+using FavouriteAccounts.api.Utility;
 using log4net;
 
 namespace FavouriteAccounts.api.Controllers
 {
+    [CustomExceptionFilter]
     public class FavoriteAccountsController : ApiController
     {
         //private readonly FavoritePayeeAccountsManagementEntities db;
