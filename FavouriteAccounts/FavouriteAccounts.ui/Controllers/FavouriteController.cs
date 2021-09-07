@@ -27,15 +27,15 @@ namespace FavouriteAccounts.ui.Controllers
         // GET: Favourite/Index
         public ActionResult Index()
         {
-            IEnumerable<FavouriteAccountModel> favouriteList;
-            HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts").Result;
-            favouriteList = response.Content.ReadAsAsync<List<FavouriteAccountModel>>().Result;
-            return View(favouriteList);
+            //IEnumerable<FavouriteAccountModel> favouriteList;
+            //HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts").Result;
+            //favouriteList = response.Content.ReadAsAsync<List<FavouriteAccountModel>>().Result;
+            //return View(favouriteList);
 
             //mocked data here
-            //var favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 4, AccountNumber = "123123", BankId = 1, BankName = "ING", CustomerId = 1, Name = "Mocked - Investment Account" },
-            //                                                    new FavouriteAccountModel { Id = 2, AccountNumber = "1253123", BankId = 1, BankName = "Euroclear", CustomerId = 1, Name = "Mocked - Private Account" }};
-            //return View(favouriteList);
+            var favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 4, AccountNumber = "123123", BankId = 1, BankName = "ing", CustomerId = 1, Name = "investment account" },
+                                                                new FavouriteAccountModel { Id = 2, AccountNumber = "1253123", BankId = 1, BankName = "euroclear", CustomerId = 1, Name = "private account" }};
+            return View(favouriteList);
         }
 
         // GET: Favourite/Details/5

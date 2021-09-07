@@ -23,6 +23,7 @@ namespace FavouriteAccounts.ui.Controllers
         }
 
         // POST: Customer/Validate
+        // login method
         [HttpPost]
         public ActionResult Validate(CustomerModel customer)
         {
@@ -39,6 +40,7 @@ namespace FavouriteAccounts.ui.Controllers
                     };
                     Session["CustomerId"] = ((CustomerModel)result.Data).Id;
                     Session["CustomerName"] = ((CustomerModel)result.Data).Name;
+                    SignInRemember(((CustomerModel)result.Data).Id, true);
                     return RedirectToAction("Index", "Favourite");
                 }
                 return RedirectToAction("Index");
@@ -78,10 +80,10 @@ namespace FavouriteAccounts.ui.Controllers
                 Logout();
         }
 
-        private void SignInRemember(string userName, bool isPersistent = false)
+        private void SignInRemember(int userId, bool isPersistent = false)
         {
             FormsAuthentication.SignOut();
-            FormsAuthentication.SetAuthCookie(userName, isPersistent);
+            FormsAuthentication.SetAuthCookie(userId.ToString(), isPersistent);
         }
 
 
