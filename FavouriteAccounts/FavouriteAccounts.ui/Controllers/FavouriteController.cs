@@ -33,7 +33,7 @@ namespace FavouriteAccounts.ui.Controllers
             return View(favouriteList);
 
             //mocked data here
-            //var favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 1, AccountNumber = "123123", BankId = 1, BankName = "ING", CustomerId = 1, Name = "Mocked - Investment Account" },
+            //var favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 4, AccountNumber = "123123", BankId = 1, BankName = "ING", CustomerId = 1, Name = "Mocked - Investment Account" },
             //                                                    new FavouriteAccountModel { Id = 2, AccountNumber = "1253123", BankId = 1, BankName = "Euroclear", CustomerId = 1, Name = "Mocked - Private Account" }};
             //return View(favouriteList);
         }
