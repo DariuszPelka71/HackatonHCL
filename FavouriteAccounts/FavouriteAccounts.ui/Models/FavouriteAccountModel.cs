@@ -12,6 +12,7 @@ namespace FavouriteAccounts.ui.Models
 
         public int BankId { get; set; }
 
-        public string BankName { get; set; }
+        public BankModel Bank { get; set; }
+        public CustomerModel Customer { get; set; }
     }
 }

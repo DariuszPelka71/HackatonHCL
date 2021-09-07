@@ -27,15 +27,22 @@ namespace FavouriteAccounts.ui.Controllers
         // GET: Favourite/Index
         public ActionResult Index()
         {
-            //IEnumerable<FavouriteAccountModel> favouriteList;
-            //HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts").Result;
-            //favouriteList = response.Content.ReadAsAsync<List<FavouriteAccountModel>>().Result;
-            //return View(favouriteList);
+            IList<FavouriteAccountModel> favouriteList;
+            HttpResponseMessage response = FavouriteApiClient.webApiClient.GetAsync("FavoriteAccounts").Result;
+
+            var customerData = response.Content.ReadAsStringAsync();
+            var jsonString = customerData.Result;
+
+            // this below lists return not valid list because of the 1st element fine and next elements null
+            favouriteList = response.Content.ReadAsAsync<List<FavouriteAccountModel>>().Result;
+            var temp = JsonConvert.DeserializeObject<List<FavouriteAccountModel>>(jsonString).Where(i => i != null);
+
+            return View(temp);
 
             //mocked data here
-            var favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 4, AccountNumber = "123123", BankId = 1, BankName = "ing", CustomerId = 1, Name = "investment account" },
-                                                                new FavouriteAccountModel { Id = 2, AccountNumber = "1253123", BankId = 1, BankName = "euroclear", CustomerId = 1, Name = "private account" }};
-            return View(favouriteList);
+            //var favouriteList = new List<FavouriteAccountModel>() { new FavouriteAccountModel { Id = 4, AccountNumber = "123123", BankId = 1, BankName = "ing", CustomerId = 1, Name = "investment account" },
+            //                                                    new FavouriteAccountModel { Id = 2, AccountNumber = "1253123", BankId = 1, BankName = "euroclear", CustomerId = 1, Name = "private account" }};
+            //return View(favouriteList);
         }
 
         // GET: Favourite/Details/5

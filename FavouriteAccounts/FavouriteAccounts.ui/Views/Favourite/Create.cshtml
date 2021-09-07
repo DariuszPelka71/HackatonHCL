@@ -18,9 +18,9 @@
         <td>IBAN/Account number: </td>
         <td>@Html.TextBoxFor(m => m.AccountNumber)</td>
     </tr>
-    <tr>o
+    <tr>
         <td>Bank: </td>
-        <td>@Html.TextBoxFor(m => m.BankName, new { @readonly="readonly" })</td>
+        <td>@Html.TextBoxFor(m => m.Bank.Name)</td>@*, new { @readonly="readonly" }*@
     </tr>
     <tr>
         <td colspan="2"><button value="Save">Submit</button></td>

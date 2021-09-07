@@ -19,7 +19,7 @@ namespace FavouriteAccounts.api
             //Custom Exeption Filter
             config.Filters.Add(new CustomExceptionFilterAttribute());
             //Global Exception Handlers
-            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
+            //config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
             // Web API routes
             config.MapHttpAttributeRoutes();
 

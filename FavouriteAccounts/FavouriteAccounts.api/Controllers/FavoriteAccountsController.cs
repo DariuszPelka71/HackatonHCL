@@ -36,12 +36,29 @@ namespace FavouriteAccounts.api.Controllers
 
 
         // GET: api/FavoriteAccounts
-        public IQueryable<FavoriteAccount> GetFavoriteAccounts()
-        {
-            IQueryable<FavoriteAccount> favoriteAccounts = _favoriteAccount.Get();
-            return favoriteAccounts;
-        }
+        //public IQueryable<FavoriteAccount> GetFavoriteAccounts()
+        //{
+        //    IQueryable<FavoriteAccount> favoriteAccounts = _favoriteAccount.Get();
+        //    return favoriteAccounts;
+        //}
 
+        // GET: api/FavoriteAccounts
+        //[ResponseType(typeof(IList<FavoriteAccount>))]
+        //public IList<FavoriteAccount> GetFavoriteAccounts()
+        //{
+        //    IQueryable<FavoriteAccount> favoriteAccountsList = _favoriteAccount.Get();
+        //    var favouriteAccountsListConverted = favoriteAccountsList.ToList();
+        //    return favoriteAccountsList.ToList();
+        //}
+
+        // GET: api/FavoriteAccounts
+        [ResponseType(typeof(IList<FavoriteAccount>))]
+        public IHttpActionResult GetFavoriteAccounts()
+        {
+            IQueryable<FavoriteAccount> favoriteAccountsList = _favoriteAccount.Get();
+            var favouriteAccountsListConverted = favoriteAccountsList.ToList();
+            return Ok(favoriteAccountsList.ToList());
+        }
 
         // GET: api/FavoriteAccounts/5
         [ResponseType(typeof(FavoriteAccount))]
