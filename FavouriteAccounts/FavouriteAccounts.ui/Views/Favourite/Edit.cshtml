@@ -1,8 +1,5 @@
 ﻿@model FavouriteAccounts.ui.Models.FavouriteAccountModel
 
-@*@{
-        ViewBag.Title = "Index";
-    }*@
 <h3><b>Edit favorite:</b></h3>
 
 @using (Html.BeginForm("Edit", "Favourite", FormMethod.Post, new { id = "frmEdit" }))
@@ -19,16 +16,14 @@
             <td>@Html.TextBoxFor(m => m.AccountNumber)</td>
         </tr>
         <tr>
-            o
             <td>Bank: </td>
-            <td>@Html.TextBoxFor(m => m.BankName, new { @readonly = "readonly" })</td>
-        </tr>
-        <tr>
-            <td colspan="2"><button value="Save">Submit</button></td>
+            <td>@Html.TextBoxFor(m => m.BankId, new { @readonly = "readonly" })</td>
         </tr>
         <tr>
             <td colspan="2">
-                <div id="errorMsg" style="color: red;"></div>
+                <input type="submit" value="Save" /> |
+                @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+                @*<button value="Save">Submit</button>*@
             </td>
         </tr>
     </table>

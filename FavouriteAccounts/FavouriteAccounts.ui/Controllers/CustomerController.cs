@@ -9,6 +9,8 @@ using FavouriteAccounts.ui.Models;
 using System.Net.Http;
 using FavouriteAccounts.ui.Helper;
 using Newtonsoft.Json;
+using System.Web.Security;
+using System.Security.Principal;
 
 namespace FavouriteAccounts.ui.Controllers
 {
@@ -46,6 +48,42 @@ namespace FavouriteAccounts.ui.Controllers
                 return View();
             }
         }
+
+
+        //POST: Logout    
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Logout()
+        {
+            try
+            {
+                FormsAuthentication.SignOut();
+
+                HttpContext.User = new GenericPrincipal(new GenericIdentity(string.Empty), null);
+
+                Session.Clear();
+                System.Web.HttpContext.Current.Session.RemoveAll();
+
+                return View(); // local page - login
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private void EnsureLoggedOut()
+        {
+            if (Request.IsAuthenticated)
+                Logout();
+        }
+
+        private void SignInRemember(string userName, bool isPersistent = false)
+        {
+            FormsAuthentication.SignOut();
+            FormsAuthentication.SetAuthCookie(userName, isPersistent);
+        }
+
 
     }
 }

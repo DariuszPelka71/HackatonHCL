@@ -1,0 +1,17 @@
+﻿@model Int32
+
+
+<h3>Are you sure you want to delete this favourite account?</h3>
+<div>
+    @using (Html.BeginForm("Delete", "Favourite", FormMethod.Post, new { id = "frmCreate" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("id", Model)
+    
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back", "Index")
+        </div>
+    }
+</div>
+

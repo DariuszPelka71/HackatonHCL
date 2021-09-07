@@ -31,18 +31,17 @@ namespace FavouriteAccounts.api.Controllers
         //}
         public FavoriteAccountsController(IFavoriteAccount favoriteAccount)
         {
-            //db = new FavoritePayeeAccountsManagementEntities();
             _favoriteAccount = favoriteAccount;
         }
 
+
         // GET: api/FavoriteAccounts
-        [ResponseType(typeof(IEnumerable<FavoriteAccount>))]
-        public IEnumerable<FavoriteAccount> GetFavoriteAccounts()
+        public IQueryable<FavoriteAccount> GetFavoriteAccounts()
         {
-            //var temp = db.FavoriteAccounts.ToList();
-            return _favoriteAccount.Get();
-            //return db.FavoriteAccounts.ToList();
+            IQueryable<FavoriteAccount> favoriteAccounts = _favoriteAccount.Get();
+            return favoriteAccounts;
         }
+
 
         // GET: api/FavoriteAccounts/5
         [ResponseType(typeof(FavoriteAccount))]
